@@ -1,13 +1,15 @@
 import { useDispatch } from 'react-redux';
-import { register } from 'redux/auth/operations';
-import { Form, Label, Input, Btn} from './RegisterForm.styled';
+import { Button } from '@mui/material';
+import { register } from 'redux/auth/authOperations';
+import { Form, Label, Input } from './RegisterForm.styled';
+
 
 export const RegisterForm = () => {
     const dispatch = useDispatch();
 
     const handleSubmit = ev => {
         ev.preventDefault();
-        const form = ev.target;
+        const form = ev.currentTarget;
         dispatch(
             register({
                 name: form.elements.name.value,
@@ -18,10 +20,10 @@ export const RegisterForm = () => {
         form.reset();
     };
 
-    return ( 
+    return (
     <Form onSubmit={handleSubmit} autoComplete="off">
         <Label>
-            User name
+            Username
             <Input type="text" name="name" />
         </Label>
         <Label>
@@ -32,7 +34,9 @@ export const RegisterForm = () => {
             Password
             <Input type="password" name="password" />
         </Label>
-        <Btn type="submit">Register</Btn>
+        <Button size="small" variant="contained" type="submit">
+            Register
+        </Button>
     </Form>
     );
 };

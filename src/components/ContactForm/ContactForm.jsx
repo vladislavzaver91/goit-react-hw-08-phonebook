@@ -1,8 +1,7 @@
 import React from 'react';
-import { Formik  } from 'formik';
+import { Formik } from 'formik';
 import { useDispatch, useSelector  } from 'react-redux';
 import { addContact } from 'redux/contactsOperations';
-import { selectContacts } from 'redux/contacts/selectors';
 import { onExistContact, onSuccesAddContact } from 'utils/notify';
 import { FormBox, FormContacts, FormTitle, SearchInput, BtnSubmit } from './ContactForm.styled';
 
@@ -14,7 +13,7 @@ const initialValues = {
 
 export const ContactForm = () => {
     const dispatch = useDispatch();
-    const contactList = useSelector(selectContacts);
+    const contactList = useSelector(state => state.contacts.items);
 
     return (
         <FormBox>

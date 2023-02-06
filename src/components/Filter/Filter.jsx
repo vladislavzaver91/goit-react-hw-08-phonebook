@@ -1,16 +1,10 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { selectFilter } from 'redux/filter/selectors';
-import { setFilter } from 'redux/filter/slice';
+import { filterChange } from 'redux/filter/filterSlice';
 import { FormTitle, SeacrhInput } from "./Filter.styled";
 
 export const Filter = () => {
-    const value = useSelector(selectFilter);
+    const value = useSelector(state => state.filter);
     const dispatch = useDispatch();
-
-    const changeFilter = ev => {
-        const { value } = ev.target;
-        dispatch(setFilter(value));
-    };
 
     return (
         <FormTitle> Find contacts by name
@@ -18,7 +12,7 @@ export const Filter = () => {
                 type="text"
                 name="filter"
                 value={value}
-                onChange={changeFilter}
+                onChange={ev => dispatch(filterChange(ev.currentTarget.value))}
             />
         </FormTitle>
     )

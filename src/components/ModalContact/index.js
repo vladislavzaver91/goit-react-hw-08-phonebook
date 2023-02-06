@@ -1,1 +1,0 @@
-export {ModalContact} from './ModalContact';

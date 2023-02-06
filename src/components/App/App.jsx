@@ -1,72 +1,97 @@
-import { lazy, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Route, Routes } from 'react-router-dom';
-import { fetchUser } from 'redux/auth/operations';
-import { selectIsRefreshing } from 'redux/auth/selectors';
-import { Layout } from 'components/Layout';
-import { PrivateRoute } from 'components/PrivateRoute';
-import { RestrictedRoute } from 'components/RestrictedRoute';
-import { NotFound } from 'pages/NotFound';
+import { Routes, Route } from 'react-router-dom';
+import { refreshUser } from 'redux/auth/authOperations';
+import { Layout } from './Layout';
+import { Contacts } from './Pages/Contacts';
+import { WelcomePage } from './Pages/HomePage';
+import { Login } from './Pages/LoginPage';
+import { Register } from './Pages/RegisterPage';
+import { PrivateRoute } from './PrivateRoute';
+import { RestrictedRoute } from './RestrictedRoute';
+import * as React from 'react';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Container } from './App.styled';
 
-const HomePage = lazy(() => import('pages/Home'));
-const RegisterPage = lazy(() => import('pages/Register'));
-const LoginPage = lazy(() => import('pages/Login'));
-const ContactsPage = lazy(() => import('pages/Contacts'));
+const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
 
 export const App = () => {
-  const isRefreshing = useSelector(selectIsRefreshing);
   const dispatch = useDispatch();
+  const { isRefreshing, isLoggedIn } = useSelector(state => state.auth);
+
+  const [mode, setMode] = React.useState('light');
+
+  const darkMode = useSelector(state => state.theme.darkMode);
+
+  React.useMemo(() => {
+    if (darkMode) {
+      setMode('dark');
+    } else {
+      setMode('light');
+    }
+  }, [darkMode]);
+
+  const colorMode = React.useMemo(
+    () => ({
+      toggleColorMode: () => {
+        setMode(prevMode => (prevMode === 'light' ? 'dark' : 'light'));
+      },
+    }),
+    []
+  );
+
+  const theme = React.useMemo(
+    () =>
+      createTheme({
+        palette: {
+          mode,
+        },
+      }),
+    [mode]
+  );
 
   useEffect(() => {
-    dispatch(fetchUser());
+    dispatch(refreshUser());
   }, [dispatch]);
 
-  return isRefreshing ? (
-    <b>Refreshing user...</b>
-  ) : (
-    <Container>
-    <Routes>
-      <Route path="/" element={<Layout />}>
-        <Route index element={<HomePage />} />
-        <Route path="/register" element={
-            <RestrictedRoute redirectTo="/contacts" component={<RegisterPage />}
-            />
-          }
-        />
-        <Route path="/login" element={
-            <RestrictedRoute redirectTo="/contacts" component={<LoginPage />} 
-            />
-          }
-        />
-
-        <Route path="/contacts" element={
-            <PrivateRoute redirectTo="/login" component={<ContactsPage />} 
-            />
-          }
-        />
-        <Route path="*" element={<NotFound />} />
-      </Route>
-    </Routes>
-    </Container>
+  return (
+    <ColorModeContext.Provider value={colorMode}>
+      <ThemeProvider theme={theme}>
+        {!isRefreshing && (
+          <Container>
+          <Routes>
+            <Route
+              path="/"
+              element={<Layout colorModeContext={ColorModeContext} />}
+            >
+              {!isLoggedIn && <Route index element={<WelcomePage />} />}
+              <Route
+                path="/contacts"
+                element={
+                  <PrivateRoute component={Contacts} redirectTo="/login" />
+                }
+              />
+              <Route
+                index
+                path="/register"
+                element={
+                  <RestrictedRoute
+                    component={Register}
+                    redirectTo="/contacts"
+                  />
+                }
+              />
+              <Route
+                path="/login"
+                element={
+                  <RestrictedRoute component={Login} redirectTo="/contacts" />
+                }
+              />
+            </Route>
+          </Routes>
+          </Container>
+        )}
+      </ThemeProvider>
+    </ColorModeContext.Provider>
   );
 };
-
-// import { ToastContainer } from "react-toastify";
-// import { ContactForm } from "../ContactForm";
-// import { Filter } from "../Filter";
-// import { ContactList } from '../ContactList';
-// import { Container } from './App.styled';
-
-// export const App = () => {
-//   return (
-//     <Container>
-//       <h1>Phonebook</h1>
-//       <ContactForm />
-//       <h2>Contacts</h2>
-//       <Filter />
-//       <ContactList />
-//       <ToastContainer />
-//     </Container>
-//   )
-// }

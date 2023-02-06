@@ -1,1 +1,1 @@
-export * as contactsAPI  from './contactsAPI'
+export * as contactsAPI from './contactsAPI';

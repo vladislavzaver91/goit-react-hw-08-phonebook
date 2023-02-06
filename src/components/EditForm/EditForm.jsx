@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { editContact } from 'redux/contacts/operations';
+import { editContact } from 'redux/contacts/contactsOperations';
 import { selectContacts } from 'redux/contacts/selectors';
-import { Form, Label, Input, Btn, Icon, BtnIcon } from './EditForm.styled';
+import { Form, Label, Input, Btn, BtnIcon } from './EditForm.styled';
 
 export const EditForm = ({ onSave, values }) => {
     const { id } = values;
@@ -44,7 +44,6 @@ export const EditForm = ({ onSave, values }) => {
     return (
         <Form onSubmit={handleSubmit}>
             <BtnIcon type="button" onClick={onSave}>
-                <Icon />
             </BtnIcon>
             <Label>
                 Name 

@@ -1,15 +1,18 @@
-import { Suspense } from 'react';
+import { Box } from '@mui/material';
 import { Outlet } from 'react-router-dom';
-import { AppBar } from 'components/AppBar';
-import { Container } from './Layout.styled';
+import { NavBar } from './AppBar/AppBar';
 
-export const Layout = () => {
+export const Layout = ({ colorModeContext }) => {
     return (
-    <Container>
-        <AppBar />
-        <Suspense fallback={null}>
-            <Outlet />
-        </Suspense>
-    </Container>
+    <Box
+        margin="0 auto"
+        sx={{
+            backgroundColor: 'background.paper',
+            minHeight: '100vh',
+        }}
+    >
+        <NavBar colorModeContext={colorModeContext} />
+        <Outlet />
+    </Box>
     );
 };
