@@ -2,13 +2,13 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Routes, Route } from 'react-router-dom';
 import { refreshUser } from 'redux/auth/authOperations';
-import { Layout } from './Layout';
-import { Contacts } from './Pages/Contacts';
-import { WelcomePage } from './Pages/HomePage';
-import { Login } from './Pages/LoginPage';
-import { Register } from './Pages/RegisterPage';
-import { PrivateRoute } from './PrivateRoute';
-import { RestrictedRoute } from './RestrictedRoute';
+import { Layout } from 'components/Layout/Layout';
+import { Contacts } from 'pages/ContactsPage';
+import { MainPage } from 'pages/HomePage';
+import { Login } from 'pages/LoginPage';
+import { Registers } from 'pages/RegisterPage';
+import { PrivateRoute } from 'components/PrivateRoute';
+import { RestrictedRoute } from 'components/RestrictedRoute';
 import * as React from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Container } from './App.styled';
@@ -64,7 +64,7 @@ export const App = () => {
               path="/"
               element={<Layout colorModeContext={ColorModeContext} />}
             >
-              {!isLoggedIn && <Route index element={<WelcomePage />} />}
+              {!isLoggedIn && <Route index element={<MainPage />} />}
               <Route
                 path="/contacts"
                 element={
@@ -76,7 +76,7 @@ export const App = () => {
                 path="/register"
                 element={
                   <RestrictedRoute
-                    component={Register}
+                    component={Registers}
                     redirectTo="/contacts"
                   />
                 }

@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
 import { Outlet } from 'react-router-dom';
-import { NavBar } from './AppBar/AppBar';
+import { NavBar } from 'components/AppBar/AppBar';
 
 export const Layout = ({ colorModeContext }) => {
     return (

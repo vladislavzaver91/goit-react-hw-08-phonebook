@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link as NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutUser } from 'redux/auth/authOperations';
-import { AddContact } from 'components/ContactForm/AddContact';
+import { AddContact } from 'components/AddContact';
 import { Box, IconButton, Link, Typography } from '@mui/material';
 import { PersonAdd } from '@mui/icons-material';
 import LogoutIcon from '@mui/icons-material/Logout';

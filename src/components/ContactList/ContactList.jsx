@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { fetchContacts, delContact } from 'redux/contactsOperations';
+import { fetchContacts, delContact } from 'redux/contacts/contactsOperations';
 import { onDelContact } from 'utils/notify';
 import { FriendList, ContactItem, Friend, BtnDelete } from './ContactList.styled';
 

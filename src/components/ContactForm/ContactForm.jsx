@@ -1,7 +1,7 @@
 import React from 'react';
 import { Formik } from 'formik';
 import { useDispatch, useSelector  } from 'react-redux';
-import { addContact } from 'redux/contactsOperations';
+import { addContact } from 'redux/contacts/contactsOperations';
 import { onExistContact, onSuccesAddContact } from 'utils/notify';
 import { FormBox, FormContacts, FormTitle, SearchInput, BtnSubmit } from './ContactForm.styled';
 
