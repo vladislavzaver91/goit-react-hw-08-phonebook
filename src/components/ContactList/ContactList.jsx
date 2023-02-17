@@ -1,9 +1,9 @@
+import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { fetchContacts, delContact } from 'redux/contacts/contactsOperations';
-import { onDelContact } from 'utils/notify';
-import { FriendList, ContactItem, Friend, BtnDelete } from './ContactList.styled';
+import { fetchContacts } from 'redux/contacts/contactsOperations';
+import { ContactItem } from 'components/ContactItem';
+import { Box } from '@mui/material';
 
 export const ContactList = () => {
     const dispatch = useDispatch();
@@ -19,18 +19,16 @@ export const ContactList = () => {
     );
 
     return (
-        <FriendList>{filteredContacts.map(({id, name, number}) => (
-            <ContactItem key={id}>
-                <Friend>{name}: {number}</Friend>
-                <BtnDelete type="button" onClick={() => {
-                    onDelContact(name); 
-                    dispatch(delContact(id))}
-                    }>Delete</BtnDelete>
-            </ContactItem>
-        ))}
-        </FriendList>
-    )
-}
+        <Box
+            as="ul"
+            sx={{ display: 'flex', flexDirection: 'column', gap: 1, mt: 2 }}
+        >
+            {filteredContacts.map(({ id, name, number }) => (
+                <ContactItem key={id} id={id} name={name} number={number} />
+            ))}
+        </Box>
+    );
+};
 
 ContactList.propTypes = {
     filteredContacts: PropTypes.arrayOf(PropTypes.shape({

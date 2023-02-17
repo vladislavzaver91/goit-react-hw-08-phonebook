@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Routes, Route } from 'react-router-dom';
 import { refreshUser } from 'redux/auth/authOperations';
-import { Layout } from 'components/Layout/Layout';
+import { Layout } from 'components/Layout';
 import { Contacts } from 'pages/ContactsPage';
 import { MainPage } from 'pages/HomePage';
 import { Login } from 'pages/LoginPage';
@@ -56,9 +56,9 @@ export const App = () => {
 
   return (
     <ColorModeContext.Provider value={colorMode}>
+      <Container>
       <ThemeProvider theme={theme}>
         {!isRefreshing && (
-          <Container>
           <Routes>
             <Route
               path="/"
@@ -89,9 +89,9 @@ export const App = () => {
               />
             </Route>
           </Routes>
-          </Container>
         )}
       </ThemeProvider>
+      </Container>
     </ColorModeContext.Provider>
   );
 };

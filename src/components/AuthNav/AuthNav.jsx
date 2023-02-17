@@ -21,7 +21,7 @@ export const AuthNav = () => {
         to="/register"
         sx={navLinkStyle}
         >
-            Register
+            Create account
         </Button>
         <Button variant="text" component={NavLink} to="/login" sx={navLinkStyle}>
             Log IN

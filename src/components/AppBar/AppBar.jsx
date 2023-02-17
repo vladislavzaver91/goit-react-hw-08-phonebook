@@ -31,7 +31,7 @@ export const NavBar = () => {
         mr={5}
         sx={{ display: { xs: 'none', md: 'inline-block' } }}
         >
-            MyPhonebook
+            PHONEBOOK
         </Typography>
         {isLoggedIn ? <UserMenu /> : <AuthNav />}
         <ThemeToggler />

@@ -1,9 +1,11 @@
 import React from 'react';
-import { Formik } from 'formik';
 import { useDispatch, useSelector  } from 'react-redux';
+import { useFormik } from 'formik';
 import { addContact } from 'redux/contacts/contactsOperations';
 import { onExistContact, onSuccesAddContact } from 'utils/notify';
-import { FormBox, FormContacts, FormTitle, SearchInput, BtnSubmit } from './ContactForm.styled';
+import { Box, Button, TextField } from '@mui/material';
+import { PersonAdd } from '@mui/icons-material';
+import { Container } from '@mui/system';
 
 const initialValues = {
     name: '',
@@ -14,46 +16,72 @@ const initialValues = {
 export const ContactForm = () => {
     const dispatch = useDispatch();
     const contactList = useSelector(state => state.contacts.items);
+    const formik = useFormik({
+        initialValues,
+        onSubmit: (values, actions) => {
+            const findedContact = contactList.find(contact => contact.name.toLowerCase().includes(values.name.toLowerCase()));
+
+            if (findedContact) {
+                onExistContact(findedContact);
+                actions.resetForm();
+                return;
+            } else {
+                onSuccesAddContact(values);
+                dispatch(addContact(values, actions));
+                actions.resetForm();
+            }
+        },
+    });
 
     return (
-        <FormBox>
-            <Formik initialValues={initialValues}
-            onSubmit={(values, actions) => {
-                const findedContact = contactList.find(contact =>
-                    contact.name.toLowerCase().includes(values.name.toLowerCase()));
-
-                    if (findedContact) {
-                        onExistContact(findedContact);
-                        actions.resetForm();
-                        return;
-                    } else {
-                        onSuccesAddContact(values);
-                        dispatch(addContact(values, actions));
-                        actions.resetForm();
-                    };
-            }}>
-            <FormContacts>
-                <FormTitle> Name
-                    <SearchInput
-                        type="text"
+        <Container>
+            <Box
+                p={4}
+                mt={6}
+                mx="auto"
+                sx={{
+                    maxWidth: '400px',
+                    boxShadow: 3,
+                }}
+            >
+                <form onSubmit={formik.handleSubmit}>
+                    <TextField
+                        fullWidth
+                        id="name"
                         name="name"
-                        pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-                        title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-                        required
+                        label="Name"
+                        type="name"
+                        value={formik.values.name}
+                        onChange={formik.handleChange}
+                        error={formik.touched.name && Boolean(formik.errors.name)}
+                        helperText={formik.touched.name && formik.errors.name}
+                        sx={{ mb: 4 }}
                     />
-                </FormTitle>
-                <FormTitle> Number
-                    <SearchInput
-                        type="tel"
+                    <TextField
+                        fullWidth
+                        id="number"
                         name="number"
-                        pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-                        title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-                        required
+                        label="Number"
+                        type="text"
+                        value={formik.values.number}
+                        onChange={formik.handleChange}
+                        error={formik.touched.number && Boolean(formik.errors.number)}
+                        helperText={formik.touched.number && formik.errors.number}
+                        sx={{ mb: 4 }}
                     />
-                </FormTitle>
-                <BtnSubmit type="submit">Add contacts</BtnSubmit>
-            </FormContacts>
-            </Formik>
-            </FormBox>
-    )
-}
+                    <Button
+                        variant="contained"
+                        type="submit"
+                        endIcon={<PersonAdd />}
+                        sx={{
+                            display: 'flex',
+                            mx: 'auto',
+                        }}
+                    >
+                        Add contact
+                    </Button>
+                </form>
+            </Box>
+        </Container>
+    );
+};
