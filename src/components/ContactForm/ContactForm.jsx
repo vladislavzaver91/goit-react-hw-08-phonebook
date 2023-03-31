@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch, useSelector  } from 'react-redux';
 import { useFormik } from 'formik';
 import { addContact } from 'redux/contacts/contactsOperations';
-import { onExistContact, onSuccesAddContact } from 'utils/notify';
+import { onExistContact, onExistNumber, onSuccesAddContact } from 'utils/notify';
 import { Box, Button, TextField } from '@mui/material';
 import { PersonAdd } from '@mui/icons-material';
 import { Container } from '@mui/system';
@@ -19,10 +19,20 @@ export const ContactForm = () => {
     const formik = useFormik({
         initialValues,
         onSubmit: (values, actions) => {
-            const findedContact = contactList.find(contact => contact.name.toLowerCase().includes(values.name.toLowerCase()));
+            const { name, number } = values;
+            const findedContactByName = contactList.find(contact => (
+                contact.name === name
+            ));
+            const findedContactByNum = contactList.find(contact => (
+                contact.number === number
+            ));
 
-            if (findedContact) {
-                onExistContact(findedContact);
+            if (findedContactByName) {
+                onExistContact(findedContactByName);
+                actions.resetForm();
+                return;
+            } if (findedContactByNum) {
+                onExistNumber(findedContactByNum);
                 actions.resetForm();
                 return;
             } else {

@@ -1,7 +1,20 @@
 import { toast, Zoom } from 'react-toastify';
 
-export const onExistContact = findedContact =>
-toast.info(`${findedContact.name} is already in contacts!`, {
+export const onExistContact = findedContactByName =>
+toast.info(`${findedContactByName.name} is already in contacts!`, {
+    position: "top-right",
+    autoClose: 2000,
+    transition: Zoom,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "colored",
+});
+
+export const onExistNumber = findedContactByNum =>
+toast.info(`Contact with number ${findedContactByNum.number} already exists!`, {
     position: "top-right",
     autoClose: 2000,
     transition: Zoom,
